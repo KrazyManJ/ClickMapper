@@ -86,11 +86,3 @@ class MouseScroll(MouseAction):
     def execute(self):
         super().execute()
         __MOUSE__.scroll(self.dx, self.dy)
-
-
-m = Macro()
-for i in range(80):
-    m.add_action(MouseMove("r", 5, 3, 5))
-m.add_action(MouseClick("left", "click", 0))
-m.add_action(MouseScroll(0,1,20))
-m.run()
