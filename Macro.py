@@ -1,6 +1,8 @@
 import abc
 import time
 import json
+from datetime import datetime
+
 from pynput import mouse
 from threading import Thread
 
@@ -13,15 +15,20 @@ class MacroEncoder(json.JSONEncoder):
         if type(o) is Macro:
             return {k: v for k, v in o.__dict__.items() if not k.startswith("_")}
         elif isinstance(o, MacroAction):
-            return {**o.__dict__, "action_type": type(o).__name__}
+            return {"action_type": type(o).__name__, **o.__dict__}
         return super().default(o)
 
 
 class Macro:
 
-    def __init__(self):
+    def __init__(self, name=None):
+
+        self.name = name
+
         self.actions = []
+
         self.__is_run__ = False
+        self.__delay__: None | datetime = None
 
     def run(self):
         if self.__is_run__: return
@@ -29,31 +36,55 @@ class Macro:
         for action in self.actions: action.execute()
         self.__is_run__ = False
 
-    def add_action(self, action):
-        self.actions.append(action)
-
     def run_as_thread(self):
         if self.__is_run__: return
         thr = Thread(target=self.run, name="macro")
         thr.start()
         return thr
 
-    def to_json(self, indent):
-        return json.dumps(self, cls=MacroEncoder, indent=4, sort_keys=True)
+    def to_json(self, indent=None):
+        return json.dumps(self, cls=MacroEncoder, indent=indent)
 
     @staticmethod
     def from_json(json_data) -> "Macro":
-
         def hook(data: dict):
             if "action_type" in data:
                 return eval(data["action_type"])(**{k: v for k, v in data.items() if k not in ["action_type"]})
-            elif list(data.keys()) == [k for k in Macro().__dict__.keys() if not k.startswith("_")]:
-                m = Macro(**{k: v for k, v in data.items() if k not in ["actions"]})
+            elif set(data.keys()) == {k for k in Macro().__dict__.keys() if not k.startswith("_")}:
+                m = Macro({k: v for k, v in data.items() if k not in ["actions"]})
                 for action in data["actions"]:
                     m.actions.append(action)
                 return m
 
         return json.loads(json_data, object_hook=hook)
+
+    def __delta__(self):
+        return round((datetime.now() - self.__delay__).total_seconds() * 1000, 2)
+
+    def start_recording(self):
+        if self.is_recording(): return
+
+        def scrl(x, y, dx, dy):
+            if not self.is_recording(): return False
+            self.actions.append(MouseMove("a", x, y, self.__delta__()))
+            self.actions.append(MouseScroll(dx, dy, 0))
+            self.__delay__ = datetime.now()
+
+        def clk(x, y, button, state):
+            if not self.is_recording(): return False
+            self.actions.append(MouseMove("a", x, y, self.__delta__()))
+            self.actions.append(MouseClick(button.name, "press" if state else "release", 0))
+            self.__delay__ = datetime.now()
+
+        self.__delay__ = datetime.now()
+        mouse.Listener(on_scroll=scrl, on_click=clk).start()
+
+    def stop_recording(self):
+        if not self.is_recording(): return
+        self.__delay__ = None
+
+    def is_recording(self):
+        return self.__delay__ is not None
 
 
 class MacroAction(abc.ABC):
