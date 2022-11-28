@@ -1,4 +1,3 @@
-import abc
 import time
 import json
 from datetime import datetime
@@ -21,19 +20,40 @@ class MacroEncoder(json.JSONEncoder):
 
 class Macro:
 
-    def __init__(self, name=None):
+    def __init__(self, name=None, description=None, author=None, number_of_executions=1, executions_delay=0):
 
         self.name = name
+        self.description = description
+        self.author = author
+        self.number_of_executions = number_of_executions
+        self.executions_delay = executions_delay
 
         self.actions = []
 
         self.__is_run__ = False
         self.__delay__: None | datetime = None
+        self.__term__ = False
 
     def run(self):
         if self.__is_run__: return
         self.__is_run__ = True
-        for action in self.actions: action.execute()
+
+        if self.number_of_executions <= 0:
+            while True:
+                for action in self.actions:
+                    if self.__term__: break
+                    action.execute()
+                    if self.__term__: break
+                time.sleep(self.executions_delay / 1000)
+                if self.__term__: break
+        else:
+            for i in range(self.number_of_executions):
+                for action in self.actions:
+                    if self.__term__: break
+                    action.execute()
+                    if self.__term__: break
+                time.sleep(self.executions_delay / 1000)
+                if self.__term__: break
         self.__is_run__ = False
 
     def run_as_thread(self):
@@ -41,6 +61,10 @@ class Macro:
         thr = Thread(target=self.run, name="macro")
         thr.start()
         return thr
+
+    def terminate(self):
+        if not self.__is_run__: return
+        self.__term__ = True
 
     def to_json(self, indent=None):
         return json.dumps(self, cls=MacroEncoder, indent=indent)
@@ -51,7 +75,7 @@ class Macro:
             if "action_type" in data:
                 return eval(data["action_type"])(**{k: v for k, v in data.items() if k not in ["action_type"]})
             elif set(data.keys()) == {k for k in Macro().__dict__.keys() if not k.startswith("_")}:
-                m = Macro({k: v for k, v in data.items() if k not in ["actions"]})
+                m = Macro(**{k: v for k, v in data.items() if k not in ["actions"]})
                 for action in data["actions"]:
                     m.actions.append(action)
                 return m
@@ -81,18 +105,24 @@ class Macro:
 
     def stop_recording(self):
         if not self.is_recording(): return
+        self.executions_delay = self.__delta__()
         self.__delay__ = None
 
     def is_recording(self):
         return self.__delay__ is not None
 
+    def execution_time(self):
+        return sum([a.delay for a in self.actions])+self.executions_delay
 
-class MacroAction(abc.ABC):
+    def total_execution_time(self):
+        return self.execution_time()*self.number_of_executions
+
+
+class MacroAction:
 
     def __init__(self, delay):
         self.delay = delay
 
-    @abc.abstractmethod
     def execute(self):
         time.sleep(self.delay / 1000)
 
