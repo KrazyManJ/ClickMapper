@@ -1,0 +1,53 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {"type": ["string", "null"]},
+        "description": {"type": ["string", "null"]},
+        "author": {"type": ["string", "null"]},
+        "number_of_executions": {"type": "number"},
+        "executions_delay": {"type": "number"},
+        "actions": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "action_type": {"const": "MouseMove"},
+                            "delay": {"type": "number"},
+                            "position": {"enum": ["r", "a"]},
+                            "x": {"type": ["number", "null"]},
+                            "y": {"type": ["number", "null"]}
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 5
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "action_type": {"const": "MouseClick"},
+                            "delay": {"type": "number"},
+                            "click_type": {"enum": ["press", "release", "click"]},
+                            "button": {"enum": ["left", "middle", "right"]}
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 4
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "action_type": {"const": "MouseScroll"},
+                            "delay": {"type": "number"},
+                            "dx": {"type": "number"},
+                            "dy": {"type": "number"}
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 4
+                    }
+                ]
+            }
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 6
+}

@@ -2,6 +2,7 @@ import time
 import json
 from datetime import datetime
 
+import jsonschema
 from pynput import mouse
 from threading import Thread
 
@@ -70,7 +71,20 @@ class Macro:
         return json.dumps(self, cls=MacroEncoder, indent=indent)
 
     @staticmethod
-    def from_json(json_data) -> "Macro":
+    def is_macro_json(json_data):
+        try:
+            jsonschema.validate(
+                instance=json.loads(json_data),
+                schema=json.load(open("macro_schema.json", "r"))
+            )
+        except jsonschema.exceptions.ValidationError as err:
+            return False
+        return True
+
+    @staticmethod
+    def from_json(json_data):
+        if not Macro.is_macro_json(json_data): return None
+
         def hook(data: dict):
             if "action_type" in data:
                 return eval(data["action_type"])(**{k: v for k, v in data.items() if k not in ["action_type"]})
@@ -112,10 +126,10 @@ class Macro:
         return self.__delay__ is not None
 
     def execution_time(self):
-        return sum([a.delay for a in self.actions])+self.executions_delay
+        return sum([a.delay for a in self.actions]) + self.executions_delay
 
     def total_execution_time(self):
-        return self.execution_time()*self.number_of_executions
+        return self.execution_time() * self.number_of_executions
 
 
 class MacroAction:
