@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="favicon">
+    <file>icon_64x64.png</file>
+    <file>icon.svg</file>
+  </qresource>
+  <qresource prefix="TitleBar">
+    <file>img/max_btn.svg</file>
+    <file>img/min_btn.svg</file>
+    <file>img/cls_btn.svg</file>
+  </qresource>
+</RCC>
