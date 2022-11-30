@@ -23,6 +23,10 @@
    <string notr="true">#Window {
 	background-color: #111111;
 	border-radius: 20px;
+}
+
+#Window:maximized #TitleBar {
+background-color: red;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">

@@ -4,8 +4,14 @@
     <file>icon.svg</file>
   </qresource>
   <qresource prefix="TitleBar">
-    <file>img/max_btn.svg</file>
-    <file>img/min_btn.svg</file>
-    <file>img/cls_btn.svg</file>
+    <file>img/ClsBtn.svg</file>
+    <file>img/ClsBtn_Act.svg</file>
+    <file>img/ClsBtn_Hov.svg</file>
+    <file>img/MaxBtn.svg</file>
+    <file>img/MaxBtn_Act.svg</file>
+    <file>img/MaxBtn_Hov.svg</file>
+    <file>img/MinBtn.svg</file>
+    <file>img/MinBtn_Act.svg</file>
+    <file>img/MinBtn_Hov.svg</file>
   </qresource>
 </RCC>

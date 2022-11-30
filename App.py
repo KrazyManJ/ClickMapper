@@ -5,90 +5,46 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import uic  # type: ignore
-from qframelesswindow.utils import startSystemMove
 
-import src.src # type: ignore
-from qframelesswindow import FramelessWindow, TitleBar
+from qframelesswindow import FramelessWindow
+
+import src.src  # type: ignore
+from RichPresence import RichPressence
+from CMTitleBar import CMTitleBar
 
 App = QApplication(sys.argv)
 
 
-def applyShadow(widget: QWidget, alpha, x=0, y=4, r=8):
-    shadow = QGraphicsDropShadowEffect()
-    shadow.setBlurRadius(r)
-    shadow.setYOffset(y)
-    shadow.setXOffset(x)
-    shadow.setColor(QColor(0, 0, 0, alpha))
-    widget.setGraphicsEffect(shadow)
+class CMWindow(FramelessWindow):
 
-class UITitle(QWidget):
-
-    TitleBar: QFrame
-    Title: QLabel
-    BtnClose: QPushButton
-    BtnMin: QPushButton
-    BtnMax: QPushButton
-    TitleIcon: QFrame
-
-    def __init__(self, parent):
-        super().__init__(parent)
-        uic.loadUi("ui/titlebar.ui", self)
-
-        self.setAttribute(Qt.WA_StyledBackground, True)
-
-        for widg, fct in [
-            (self.BtnClose, self.window().close),
-            (self.BtnMin, self.window().showMinimized),
-            (self.BtnMax, self.__toggleMaxState)
-        ]:
-            widg.clicked.connect(fct)
-            applyShadow(widg,80)
-
-        applyShadow(self,80)
-        applyShadow(self.Title, 100)
-        applyShadow(self.TitleIcon, 100, x=2)
-
-        self.window().installEventFilter(self)
-
-    def eventFilter(self, obj, e):
-        return super().eventFilter(obj, e)
-
-    def mouseDoubleClickEvent(self, event):
-        if event.button() != Qt.LeftButton: return
-        self.__toggleMaxState()
-
-    def mouseMoveEvent(self, e):
-        if sys.platform != "win32" or not self._isDragRegion(e.pos()): return
-        startSystemMove(self.window(), e.globalPos())
-
-    def mousePressEvent(self, e):
-        if sys.platform == "win32" or e.button() != Qt.LeftButton or not self._isDragRegion(e.pos()): return
-        startSystemMove(self.window(), e.globalPos())
-
-    def __toggleMaxState(self):
-        if self.window().isMaximized(): self.window().showNormal()
-        else: self.window().showMaximized()
-
-    def _isDragRegion(self, pos):
-        return 0 < pos.x() < self.width() - 46 * 3
-
-
-
-class UI(FramelessWindow):
-
-
-    def __init__(self) -> None:
+    def __init__(self, app: QApplication) -> None:
         super().__init__()
-        self.clickPosition = QPoint(0,0)
-        self.normalWindowWidth = None
+        self.app = app
+        self.clickPosition = QPoint(0, 0)
+
         uic.loadUi("ui/design.ui", self)
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("me.KrazyManJ.ClickMapper.1.0.0")
         self.setWindowIcon(QIcon(":/favicon/icon.svg"))
-        self.setTitleBar(UITitle(self)) # type: ignore
+        self.setTitleBar(CMTitleBar(self))  # type: ignore
         self.titleBar.raise_()
+
+        frameGm = self.frameGeometry()
+        frameGm.moveCenter(self.app.desktop().screenGeometry(
+            self.app.desktop().screenNumber(self.app.desktop().cursor().pos())).center())
+        self.move(frameGm.topLeft())
+        RichPressence.begin()
+
+    def setMacroTitling(self, title: str):
+        self.setWindowTitle(f"Click Mapper - {title}")
+        self.titleBar.setMacroTitling(title)
+        RichPressence.setMacroName(title)
+
+    def closeEvent(self, a0: QCloseEvent) -> None:
+        RichPressence.close()
 
 
 if __name__ == '__main__':
-    ui = UI()
+    ui = CMWindow(App)
     ui.show()
+    ui.setMacroTitling("my_first_long_name_and_ultra_cool_macro.py")  # For testing
     sys.exit(App.exec())
