@@ -1,3 +1,4 @@
+import os.path
 import time
 import json
 from datetime import datetime
@@ -8,6 +9,7 @@ from threading import Thread
 
 __MOUSE__ = mouse.Controller()
 
+INFINITE = -1
 
 class MacroEncoder(json.JSONEncoder):
 
@@ -75,7 +77,7 @@ class Macro:
         try:
             jsonschema.validate(
                 instance=json.loads(json_data),
-                schema=json.load(open("macro_schema.json", "r"))
+                schema=json.load(open(os.path.join(os.path.dirname(__file__),"macro_schema.json"), "r"))
             )
         except jsonschema.exceptions.ValidationError as err:
             return False
