@@ -54,7 +54,7 @@ class CMWindow(FramelessWindow):
         RichPressence.begin()
 
         for saved_path in set(json.load(open("saved_macros.json","r"))):
-            self.macroAdd(os.path.abspath(saved_path))
+            self.macroAdd(saved_path)
         self.selected_macro_row:CMMacroRow | None = None
 
     def shadowEngine(self):
@@ -80,7 +80,9 @@ class CMWindow(FramelessWindow):
         macrorow.deleteLater()
 
     def macroAdd(self, file_path):
-        jsondata = open(file_path, "r",encoding="utf8",errors="surrogateescape").read()
+        pth = os.path.abspath(file_path)
+        if pth in self.macroListPath(): return
+        jsondata = open(pth, "r",encoding="utf8",errors="surrogateescape").read()
         if Macro.is_macro_json(jsondata):
             m: Macro = Macro.from_json(jsondata)
             self.MacroListContent.layout().addWidget(
@@ -88,7 +90,7 @@ class CMWindow(FramelessWindow):
             )
 
     def macroListPath(self):
-        return [i.macro_path for i in self.MacroListContent.children() if isinstance(i,CMMacroRow)]
+        return [os.path.abspath(i.macro_path) for i in self.MacroListContent.children() if isinstance(i,CMMacroRow)]
 
     def setMacroTitling(self, title: str, path: str):
         self.setWindowTitle(f"Click Mapper - {title}")
@@ -105,13 +107,20 @@ class CMWindow(FramelessWindow):
         json.dump(self.macroListPath(),open("saved_macros.json","w",encoding="utf8",errors="surrogateescape"))
 
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent) -> None:
-        if event.mimeData().hasUrls: event.accept()
-        else: event.ignore()
+        if not event.mimeData().hasUrls():
+            event.ignore()
+            return
+        paths = [os.path.abspath(l.toLocalFile()) for l in event.mimeData().urls() if os.path.abspath(l.toLocalFile()) not in self.macroListPath()]
+        if len(paths) == 0:
+            event.ignore()
+            return
+        if len([l for l in paths if Macro.is_macro_json(open(l,"r",encoding="utf8",errors="surrogateescape").read())]) == 0:
+            event.ignore()
+            return
+
+        event.accept()
 
     def dropEvent(self, a0: QtGui.QDropEvent) -> None:
         self.activateWindow()
-        INCL_PATHS = [i.macro_path for i in self.MacroListContent.children() if isinstance(i,CMMacroRow)]
         for path in a0.mimeData().urls():
-            pth = os.path.abspath(path.toLocalFile())
-            if pth not in INCL_PATHS:
-                self.macroAdd(pth)
+             self.macroAdd(path.toLocalFile())

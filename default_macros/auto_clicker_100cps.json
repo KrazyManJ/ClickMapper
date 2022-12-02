@@ -1,0 +1,15 @@
+{
+    "name": "Auto clicker (100cps)",
+    "description": "Simple autoclicker macro that runs on speed at 100 clicks per second",
+    "author": "KrazyManJ",
+    "number_of_executions": -1,
+    "executions_delay": 0,
+    "actions": [
+        {
+            "action_type": "MouseClick",
+            "delay": 10,
+            "click_type": "click",
+            "button": "left"
+        }
+    ]
+}
