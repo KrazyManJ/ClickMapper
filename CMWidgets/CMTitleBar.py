@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5 import uic #type: ignore
-from PyQt5.QtCore import Qt
+from PyQt5 import uic
+from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QWidget, QFrame, QLabel, QPushButton
 from qframelesswindow.utils import startSystemMove
@@ -25,12 +25,8 @@ class CMTitleBar(QWidget):
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.macroname = ""
 
-        BTN_MAP = [
-            (self.BtnClose, self.window().close),
-            (self.BtnMin, self.window().showMinimized),
-            (self.BtnMax, self.__toggleMaxState)
-        ]
-
+        BTN_MAP = [(self.BtnClose, self.window().close), (self.BtnMin, self.window().showMinimized),
+            (self.BtnMax, self.__toggleMaxState)]
         for widg, fct in BTN_MAP:
             widg.clicked.connect(fct)
             apply_shadow(widg, 80)
@@ -41,15 +37,13 @@ class CMTitleBar(QWidget):
 
         self.window().installEventFilter(self)
 
-
     def setMacroTitling(self, title):
         self.macroname = title
         self.updateMacroTitling()
         self.MacroName.setToolTip(self.macroname)
 
     def updateMacroTitling(self):
-        self.MacroName.setText(Utils.crop_string(self.macroname,(self.window().width() - 500) // 10))
-
+        self.MacroName.setText(Utils.crop_string(self.macroname, (self.window().width() - 500) // 10))
 
     def eventFilter(self, obj, e):
         return super().eventFilter(obj, e)
@@ -77,4 +71,3 @@ class CMTitleBar(QWidget):
 
     def resizeEvent(self, a0: QResizeEvent) -> None:
         self.updateMacroTitling()
-

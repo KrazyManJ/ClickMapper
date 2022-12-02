@@ -79,7 +79,7 @@ class Macro:
                 instance=json.loads(json_data),
                 schema=json.load(open(os.path.join(os.path.dirname(__file__),"macro_schema.json"), "r"))
             )
-        except jsonschema.exceptions.ValidationError as err:
+        except Exception:
             return False
         return True
 

@@ -1,0 +1,107 @@
+{
+    "name": "My Test Macro",
+    "description": null,
+    "author": "KrazyManJ",
+    "number_of_executions": 1,
+    "executions_delay": 385.7,
+    "actions": [
+        {
+            "action_type": "MouseMove",
+            "delay": 725.96,
+            "position": "a",
+            "x": 136,
+            "y": 120
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 102.29,
+            "position": "a",
+            "x": 136,
+            "y": 120
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 579.22,
+            "position": "a",
+            "x": 1168,
+            "y": 155
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 92.7,
+            "position": "a",
+            "x": 1168,
+            "y": 155
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 497.47,
+            "position": "a",
+            "x": 258,
+            "y": 402
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 86.82,
+            "position": "a",
+            "x": 258,
+            "y": 402
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 1115.23,
+            "position": "a",
+            "x": 1103,
+            "y": 514
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 75.25,
+            "position": "a",
+            "x": 1103,
+            "y": 514
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 367.96,
+            "position": "a",
+            "x": 397,
+            "y": 611
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 73.27,
+            "position": "a",
+            "x": 397,
+            "y": 611
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 307.11,
+            "position": "a",
+            "x": 1045,
+            "y": 929
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 83.61,
+            "position": "a",
+            "x": 1045,
+            "y": 929
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 428.63,
+            "position": "a",
+            "x": 1670,
+            "y": 502
+        },
+        {
+            "action_type": "MouseMove",
+            "delay": 78.99,
+            "position": "a",
+            "x": 1670,
+            "y": 502
+        }
+    ]
+}

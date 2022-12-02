@@ -11,11 +11,15 @@ class RichPressence:
     @classmethod
     def begin(cls):
         cls.RPC.connect()
-        cls.RPC.update(large_image="large_icon", start=cls.StartTime)
+        cls.setIdle()
 
     @classmethod
     def setMacroName(cls, name):
         cls.RPC.update(large_image="large_icon", details="Editing Macro", state=name, start=cls.StartTime)
+
+    @classmethod
+    def setIdle(cls):
+        cls.RPC.update(large_image="large_icon", details="Idling", start=cls.StartTime)
 
     @classmethod
     def close(cls):
