@@ -1,7 +1,7 @@
 from pypresence import Presence
 from datetime import datetime
 
-from Tokens import RICH_PRESENCE
+from .tokens import RICH_PRESENCE
 
 
 class RichPressence:

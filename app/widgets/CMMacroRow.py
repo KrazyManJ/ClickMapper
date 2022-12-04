@@ -3,17 +3,16 @@ import os.path
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor
-from PyQt5.QtWidgets import QFrame, QSizePolicy, QHBoxLayout, QPushButton, QLabel, QVBoxLayout, QToolTip
+from PyQt5.QtWidgets import QFrame, QSizePolicy, QHBoxLayout, QPushButton, QLabel, QVBoxLayout
 
 from typing import TYPE_CHECKING
 
-
-import Utils
-from CMWidgets.Dialogs.CMRemoveMacroDialog import CMRemoveMacroDialog
-from Macro import Macro
+from app import utils
+from app.widgets.dialogs.CMRemoveMacroDialog import CMRemoveMacroDialog
+from app.macro.Macro import Macro
 
 if TYPE_CHECKING:
-    from CMWidgets.CMWindow import CMWindow
+    from app.widgets.CMWindow import CMWindow
 
 
 class CMMacroRow(QFrame):
@@ -39,11 +38,11 @@ class CMMacroRow(QFrame):
         self.label_layout.setContentsMargins(0, 0, 0, 0)
 
         self.label = QLabel()
-        self.label.setText(Utils.crop_string(self.macro.name or "Untitled", 25))
+        self.label.setText(utils.crop_string(self.macro.name or "Untitled", 25))
         self.label_layout.addWidget(self.label)
 
         self.author = QLabel()
-        self.author.setText(Utils.crop_string(self.macro.description or "No description provided", 80))
+        self.author.setText(utils.crop_string(self.macro.description or "No description provided", 80))
         self.author.setWordWrap(True)
         self.author.setStyleSheet('color: #777777;font: 9pt "Inter"')
         self.label_layout.addWidget(self.author)
@@ -55,10 +54,13 @@ class CMMacroRow(QFrame):
         self.main_layout.addWidget(self.button)
 
     def mousePressEvent(self, a0) -> None:
-        self.win.macroChoose(self)
+        if a0.modifiers() & Qt.ControlModifier and a0.button() == Qt.LeftButton:
+            os.system(f"explorer /select,{self.macro_path}")
+        else:
+            self.win.macroChoose(self)
 
     def mouseDoubleClickEvent(self, a0: QtGui.QMouseEvent) -> None:
-        pass
+        self.win.macroRun(self)
 
     def removeMacro(self):
         dialog = CMRemoveMacroDialog(self.macro.name)

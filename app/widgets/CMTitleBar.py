@@ -1,13 +1,14 @@
+import os
 import sys
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QWidget, QFrame, QLabel, QPushButton
 from qframelesswindow.utils import startSystemMove
 
-import Utils
-from Utils import apply_shadow
+from app import utils
+from app.utils import apply_shadow
 
 
 class CMTitleBar(QWidget):
@@ -21,7 +22,7 @@ class CMTitleBar(QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)  # type: ignore
-        uic.loadUi("ui/titlebar.ui", self)
+        uic.loadUi(os.path.join(os.path.dirname(__file__), os.pardir,"ui","titlebar.ui"), self)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.macroname = ""
 
@@ -43,7 +44,7 @@ class CMTitleBar(QWidget):
         self.MacroName.setToolTip(self.macroname)
 
     def updateMacroTitling(self):
-        self.MacroName.setText(Utils.crop_string(self.macroname, (self.window().width() - 500) // 10))
+        self.MacroName.setText(utils.crop_string(self.macroname, (self.window().width() - 500) // 10))
 
     def eventFilter(self, obj, e):
         return super().eventFilter(obj, e)

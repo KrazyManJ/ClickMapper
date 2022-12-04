@@ -31,24 +31,17 @@ background-color: #212121;
 }
 
 #TitleIcon {
-	border-image: url(:/favicon/icon_64x64.png)
+	border-image: url(:/Favicon/favicon/icon_64x64.png)
 }
 #TitleBarBtns &gt; QPushButton {
 	max-width: 30px;
 	max-height: 30px;
 }
 
-#BtnClose { border-image: url(:/TitleBar/img/ClsBtn.svg); }
-#BtnMax { border-image: url(:/TitleBar/img/MaxBtn.svg); }
-#BtnMin { border-image: url(:/TitleBar/img/MinBtn.svg); }
-
-#BtnClose:hover { border-image: url(:/TitleBar/img/ClsBtn_Hov.svg); }
-#BtnMax:hover { border-image: url(:/TitleBar/img/MaxBtn_Hov.svg); }
-#BtnMin:hover { border-image: url(:/TitleBar/img/MinBtn_Hov.svg); }
-
+#BtnClose { border-image: url(:/TitleBar/title_bar/ClsBtn.svg); }
+#BtnClose:hover { border-image: url(:/TitleBar/title_bar/ClsBtn_Hov.svg); }
 #BtnClose:pressed { border-image: url(:/TitleBar/img/ClsBtn_Act.svg); }
-#BtnMax:pressed { border-image: url(:/TitleBar/img/MaxBtn_Act.svg); }
-#BtnMin:pressed { border-image: url(:/TitleBar/img/MinBtn_Act.svg); }
+
 
 #DialogText {
 font: 16pt &quot;Inter&quot;;
@@ -69,7 +62,7 @@ margin-bottom: 10px
 }
 
 #DialogIcon {
-border-image: url(:/Dialog/img/Warn.svg);
+border-image: url(:/Dialog/dialog/Warn.svg);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -497,7 +490,7 @@ border-image: url(:/Dialog/img/Warn.svg);
   </layout>
  </widget>
  <resources>
-  <include location="../src/src.qrc"/>
+  <include location="../images/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

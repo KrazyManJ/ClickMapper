@@ -24,24 +24,25 @@
 }
 
 #TitleIcon {
-	border-image: url(:/favicon/icon_64x64.png)
+	border-image: url(:/Favicon/favicon/icon_64x64.png)
 }
 #TitleBarBtns &gt; QPushButton {
 	max-width: 30px;
 	max-height: 30px;
 }
 
-#BtnClose { border-image: url(:/TitleBar/img/ClsBtn.svg); }
-#BtnMax { border-image: url(:/TitleBar/img/MaxBtn.svg); }
-#BtnMin { border-image: url(:/TitleBar/img/MinBtn.svg); }
+#BtnClose { border-image: url(:/TitleBar/title_bar/ClsBtn.svg); }
+#BtnMax { border-image: url(:/TitleBar/title_bar/MaxBtn.svg); }
+#BtnMin { border-image: url(:/TitleBar/title_bar/MinBtn.svg); }
 
-#BtnClose:hover { border-image: url(:/TitleBar/img/ClsBtn_Hov.svg); }
-#BtnMax:hover { border-image: url(:/TitleBar/img/MaxBtn_Hov.svg); }
-#BtnMin:hover { border-image: url(:/TitleBar/img/MinBtn_Hov.svg); }
+#BtnClose:hover { border-image: url(:/TitleBar/title_bar/ClsBtn_Hov.svg); }
+#BtnMax:hover { border-image: url(:/TitleBar/title_bar/MaxBtn_Hov.svg); }
+#BtnMin:hover { border-image: url(:/TitleBar/title_bar/MinBtn_Hov.svg); }
 
-#BtnClose:pressed { border-image: url(:/TitleBar/img/ClsBtn_Act.svg); }
-#BtnMax:pressed { border-image: url(:/TitleBar/img/MaxBtn_Act.svg); }
-#BtnMin:pressed { border-image: url(:/TitleBar/img/MinBtn_Act.svg); }
+#BtnClose:pressed { border-image: url(:/TitleBar/title_bar/ClsBtn_Act.svg); }
+#BtnMax:pressed { border-image: url(:/TitleBar/title_bar/MaxBtn_Act.svg); }
+#BtnMin:pressed { border-image: url(:/TitleBar/title_bar/MinBtn_Act.svg); }
+
 
 #MacroName {
 	font: 12pt &quot;Inter&quot;;
@@ -355,7 +356,7 @@ QToolTip {
   </layout>
  </widget>
  <resources>
-  <include location="../src/src.qrc"/>
+  <include location="../images/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

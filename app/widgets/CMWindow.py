@@ -1,28 +1,37 @@
 import ctypes
 import json
 import os.path
+from os.path import abspath,dirname,pardir,join as pathjoin
 
-from PyQt5 import uic, QtGui, Qt, QtCore
-from PyQt5.QtCore import QThreadPool
+from PyQt5 import uic, QtGui, Qt
+from PyQt5.QtCore import QThreadPool, QRunnable, pyqtSlot
 from PyQt5.QtGui import QIcon, QCloseEvent
 from PyQt5.QtWidgets import QFrame, QLabel, QScrollArea, QWidget, QApplication, QFileDialog
 from qframelesswindow import FramelessWindow
 
-import Utils
+from .. import utils
 from .CMTitleBar import CMTitleBar
 from .CMMacroRow import CMMacroRow
-from Macro import Macro
-from RichPresence import RichPressence
+from app.macro.Macro import Macro
+from app.rich_presence import RichPressence
+from .dialogs.CMRunInfMacroDialog import CMRunInfMacroDialog
 
 
-# class MacroRunner(QRunnable):
-#
-#     @pyqtSlot()
-#     def run(self):
-#         Macro.from_json(open("default_macros/my_test_macro.json","r").read()).run()
+class MacroRunner(QRunnable):
+    def __init__(self,macro) -> None:
+        super().__init__()
+        self.macro = macro
+
+    @pyqtSlot()
+    def run(self):
+        self.macro.run()
 
 
 class CMWindow(FramelessWindow):
+
+    __SAVED_MACROS_PATH__ = pathjoin(dirname(__file__),pardir,"saved_macros.json")
+
+
     MacroListCtr: QFrame
     MacroListTitle: QFrame
     MacroListTitleLabel: QLabel
@@ -36,7 +45,7 @@ class CMWindow(FramelessWindow):
 
         # UI LOADING, ICON, TITLEBAR, SHADOWENGINE
 
-        uic.loadUi("ui/design.ui", self)
+        uic.loadUi(os.path.join(os.path.dirname(__file__), os.pardir,"ui","design.ui"), self)
         self.shadowEngine()
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("me.KrazyManJ.ClickMapper.1.0.0")
         self.setWindowIcon(QIcon(":/favicon/icon.svg"))
@@ -62,8 +71,8 @@ class CMWindow(FramelessWindow):
         self.MacroList.mouseDoubleClickEvent = self.MacroListDoubleClickEvent
 
     def shadowEngine(self):
-        Utils.apply_shadow(self.MacroListCtr, 80, 2, 4)
-        Utils.apply_shadow(self.MacroListTitleLabel, 100)
+        utils.apply_shadow(self.MacroListCtr, 80, 2, 4)
+        utils.apply_shadow(self.MacroListTitleLabel, 100)
 
     def macroChoose(self, macrorow: CMMacroRow):
         if macrorow is self.selected_macro_row:
@@ -88,21 +97,21 @@ class CMWindow(FramelessWindow):
         macrorow.deleteLater()
 
     def macroAdd(self, file_path):
-        pth = os.path.abspath(file_path)
+        pth = abspath(file_path)
         if pth in self.macroListPath(): return
         if Macro.is_macro_file(file_path):
             m: Macro = Macro.from_macro_file(file_path)
             self.MacroListContent.layout().addWidget(CMMacroRow(self, file_path, m))
 
     def macroListPath(self):
-        return [os.path.abspath(i.macro_path) for i in self.MacroListContent.children() if isinstance(i, CMMacroRow)]
+        return [abspath(i.macro_path) for i in self.MacroListContent.children() if isinstance(i, CMMacroRow)]
 
     def macroListSave(self):
         json.dump([os.path.relpath(p) for p in self.macroListPath()],
-                  open("saved_macros.json", "w", encoding="utf8", errors="surrogateescape"))
+                  open(self.__SAVED_MACROS_PATH__, "w", encoding="utf8", errors="surrogateescape"))
 
     def macroListLoad(self):
-        return set(json.load(open("saved_macros.json", "r", encoding="utf8", errors="surrogateescape")))
+        return set(json.load(open(self.__SAVED_MACROS_PATH__, "r", encoding="utf8", errors="surrogateescape")))
 
     def setMacroTitling(self, title: str, path: str):
         self.setWindowTitle(f"Click Mapper - {title}")
@@ -122,8 +131,8 @@ class CMWindow(FramelessWindow):
         if not event.mimeData().hasUrls():
             event.ignore()
             return
-        paths = [os.path.abspath(l.toLocalFile()) for l in event.mimeData().urls() if
-                 os.path.abspath(l.toLocalFile()) not in self.macroListPath()]
+        paths = [abspath(l.toLocalFile()) for l in event.mimeData().urls() if
+                 abspath(l.toLocalFile()) not in self.macroListPath()]
         if len(paths) == 0:
             event.ignore()
             return
@@ -144,3 +153,9 @@ class CMWindow(FramelessWindow):
     def MacroListDoubleClickEvent(self, ev):
         for path in QFileDialog.getOpenFileNames(self, 'Open Macro files...', filter="Macro files (*.json)")[0]:
             self.macroAdd(path)
+
+    def macroRun(self, macrorow: CMMacroRow):
+        if macrorow.macro.is_infinite():
+            if not CMRunInfMacroDialog().execResponse().accepted:
+                return
+        self.threadpool.start(MacroRunner(macrorow.macro))

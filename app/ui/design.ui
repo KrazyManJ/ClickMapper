@@ -87,16 +87,30 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 }
 
 #MacroListContent &gt; QFrame { 
-border-radius: 10px;
-min-height: 65px;
-max-height: 65px; 
+	border-radius: 10px;
+	min-height: 65px;
+	max-height: 65px; 
 }
-#MacroListContent QFrame:hover {background: #151515; }
-#MacroList QLabel { color: white;font: 12pt &quot;Inter&quot; }
-#MacroList QPushButton { border-image: url(:/TitleBar/img/ClsBtn.svg);
-min-width: 20px;max-width: 20px;min-height: 20px;max-height: 20px; }
-#MacroList QPushButton:hover { border-image: url(:/TitleBar/img/ClsBtn_Hov.svg); }
-#MacroList QPushButton:pressed { border-image: url(:/TitleBar/img/ClsBtn_Act.svg); } </string>
+#MacroListContent QFrame:hover {
+	background: #151515; 
+}
+#MacroList QLabel { 
+	color: white;
+	font: 12pt &quot;Inter&quot; 
+}
+#MacroList QPushButton { 
+	border-image: url(:/TitleBar/title_bar/ClsBtn.svg);
+	min-width: 20px;
+	max-width: 20px;
+	min-height: 20px;
+	max-height: 20px; 
+}
+#MacroList QPushButton:hover { 
+	border-image: url(:/TitleBar/title_bar/ClsBtn_Hov.svg); 
+}
+#MacroList QPushButton:pressed { 
+	border-image: url(:/TitleBar/title_bar/ClsBtn_Act.svg); 
+} </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -307,7 +321,7 @@ min-width: 20px;max-width: 20px;min-height: 20px;max-height: 20px; }
   </layout>
  </widget>
  <resources>
-  <include location="../src/src.qrc"/>
+  <include location="../images/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -7,6 +7,7 @@ from os import PathLike
 import jsonschema
 from pynput import mouse
 from threading import Thread
+from os.path import dirname,join as pathjoin
 
 __MOUSE__ = mouse.Controller()
 
@@ -73,7 +74,7 @@ class Macro:
         return json.dumps(self, cls=MacroEncoder, indent=indent)
 
     OPEN_FLAGS = {"encoding": "utf-8", "errors": "surrogateescape"}
-    SCHEMA = json.load(open(os.path.join(os.path.dirname(__file__), "macro_schema.json"), "r", **OPEN_FLAGS))
+    SCHEMA = json.load(open(pathjoin(dirname(__file__), "macro_schema.json"), "r", **OPEN_FLAGS))
 
     @classmethod
     def is_macro_json(cls,json_data):
@@ -145,6 +146,9 @@ class Macro:
 
     def total_execution_time(self):
         return self.execution_time() * self.number_of_executions
+
+    def is_infinite(self):
+        return self.number_of_executions <= 0
 
 
 class MacroAction:
