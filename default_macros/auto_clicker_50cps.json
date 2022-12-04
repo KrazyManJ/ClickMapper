@@ -1,7 +1,6 @@
 {
     "name": "Auto clicker (50cps)",
     "description": "Simple autoclicker macro that runs on speed at 50 clicks per second",
-    "author": "KrazyManJ",
     "number_of_executions": -1,
     "executions_delay": 0,
     "actions": [

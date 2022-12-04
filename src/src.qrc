@@ -14,4 +14,7 @@
     <file>img/MinBtn_Act.svg</file>
     <file>img/MinBtn_Hov.svg</file>
   </qresource>
+  <qresource prefix="Dialog">
+    <file>img/Warn.svg</file>
+  </qresource>
 </RCC>

@@ -1,7 +1,6 @@
 {
     "name": "My Test Macro",
     "description": null,
-    "author": "KrazyManJ",
     "number_of_executions": 1,
     "executions_delay": 385.7,
     "actions": [

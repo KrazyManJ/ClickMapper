@@ -26,7 +26,7 @@ class CMTitleBar(QWidget):
         self.macroname = ""
 
         BTN_MAP = [(self.BtnClose, self.window().close), (self.BtnMin, self.window().showMinimized),
-            (self.BtnMax, self.__toggleMaxState)]
+                   (self.BtnMax, self.__toggleMaxState)]
         for widg, fct in BTN_MAP:
             widg.clicked.connect(fct)
             apply_shadow(widg, 80)

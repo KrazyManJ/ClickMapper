@@ -5,22 +5,35 @@ from Tokens import RICH_PRESENCE
 
 
 class RichPressence:
-    RPC: Presence = Presence(RICH_PRESENCE, pipe=0)
-    StartTime: int = round(datetime.now().timestamp())
+    RPC: None | Presence
 
     @classmethod
     def begin(cls):
-        cls.RPC.connect()
-        cls.setIdle()
+        try:
+            cls.RPC: Presence = Presence(RICH_PRESENCE, pipe=0)
+            cls.StartTime: int = round(datetime.now().timestamp())
+            cls.RPC.connect()
+            cls.setIdle()
+        except:
+            pass
 
     @classmethod
     def setMacroName(cls, name):
-        cls.RPC.update(large_image="large_icon", details="Editing Macro", state=name, start=cls.StartTime)
+        try:
+            cls.RPC.update(large_image="large_icon", details="Editing Macro", state=name, start=cls.StartTime)
+        except:
+            pass
 
     @classmethod
     def setIdle(cls):
-        cls.RPC.update(large_image="large_icon", details="Idling", start=cls.StartTime)
+        try:
+            cls.RPC.update(large_image="large_icon", details="Idling", start=cls.StartTime)
+        except:
+            pass
 
     @classmethod
     def close(cls):
-        cls.RPC.close()
+        try:
+            cls.RPC.close()
+        except:
+            pass

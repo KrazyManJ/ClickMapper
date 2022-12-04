@@ -1,0 +1,7 @@
+{
+    "name": "My long name test macro that is kind of long",
+    "description": "Long named macro to just test out, how ClickMapper can handle",
+    "number_of_executions": 1,
+    "executions_delay": 0,
+    "actions": []
+}

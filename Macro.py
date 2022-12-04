@@ -2,6 +2,7 @@ import os.path
 import time
 import json
 from datetime import datetime
+from os import PathLike
 
 import jsonschema
 from pynput import mouse
@@ -23,11 +24,10 @@ class MacroEncoder(json.JSONEncoder):
 
 class Macro:
 
-    def __init__(self, name=None, description=None, author=None, number_of_executions=1, executions_delay=0):
+    def __init__(self, name=None, description=None, number_of_executions=1, executions_delay=0):
 
         self.name = name
         self.description = description
-        self.author = author
         self.number_of_executions = number_of_executions
         self.executions_delay = executions_delay
 
@@ -72,19 +72,33 @@ class Macro:
     def to_json(self, indent=None):
         return json.dumps(self, cls=MacroEncoder, indent=indent)
 
-    @staticmethod
-    def is_macro_json(json_data):
+    OPEN_FLAGS = {"encoding": "utf-8", "errors": "surrogateescape"}
+    SCHEMA = json.load(open(os.path.join(os.path.dirname(__file__), "macro_schema.json"), "r", **OPEN_FLAGS))
+
+    @classmethod
+    def is_macro_json(cls,json_data):
         try:
             jsonschema.validate(
                 instance=json.loads(json_data),
-                schema=json.load(open(os.path.join(os.path.dirname(__file__),"macro_schema.json"), "r"))
+                schema=cls.SCHEMA
             )
         except Exception:
             return False
         return True
 
-    @staticmethod
-    def from_json(json_data):
+    @classmethod
+    def is_macro_file(cls, file_path: str | PathLike):
+        if not os.path.isfile(file_path): return False
+        if not file_path.endswith(".json"): return False
+        return cls.is_macro_json(open(file_path, "r", **cls.OPEN_FLAGS).read())
+
+    @classmethod
+    def from_macro_file(cls, file_path: str | PathLike):
+        if not cls.is_macro_file(file_path): return None
+        return cls.from_json(open(file_path, "r", **cls.OPEN_FLAGS).read())
+
+    @classmethod
+    def from_json(cls, json_data):
         if not Macro.is_macro_json(json_data): return None
 
         def hook(data: dict):
@@ -95,7 +109,6 @@ class Macro:
                 for action in data["actions"]:
                     m.actions.append(action)
                 return m
-
         return json.loads(json_data, object_hook=hook)
 
     def __delta__(self):

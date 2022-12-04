@@ -3,7 +3,6 @@
     "properties": {
         "name": {"type": ["string", "null"]},
         "description": {"type": ["string", "null"]},
-        "author": {"type": ["string", "null"]},
         "number_of_executions": {"type": "number"},
         "executions_delay": {"type": "number"},
         "actions": {
@@ -49,5 +48,5 @@
         }
     },
     "additionalProperties": false,
-    "minProperties": 6
+    "minProperties": 5
 }

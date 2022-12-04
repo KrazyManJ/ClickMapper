@@ -1,12 +1,12 @@
 {
-    "name": "Auto clicker (20cps)",
-    "description": "Simple autoclicker macro that runs on speed at 20 clicks per second",
+    "name": "Auto clicker (500cps)",
+    "description": "Simple autoclicker macro that runs on speed at 500 clicks per second",
     "number_of_executions": -1,
     "executions_delay": 0,
     "actions": [
         {
             "action_type": "MouseClick",
-            "delay": 50,
+            "delay": 2,
             "click_type": "click",
             "button": "left"
         }
