@@ -110,7 +110,15 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 }
 #MacroList QPushButton:pressed { 
 	border-image: url(:/TitleBar/title_bar/ClsBtn_Act.svg); 
-} </string>
+} 
+
+#MacroListFilterInput {
+	font: 10pt &quot;Inter&quot;;
+	background: #333333;
+	border-radius: 10px;
+	color: #cccccc;
+	padding: 5px 10px
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -223,16 +231,16 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
              <number>0</number>
             </property>
             <property name="leftMargin">
-             <number>0</number>
+             <number>10</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>10</number>
             </property>
             <property name="bottomMargin">
-             <number>0</number>
+             <number>10</number>
             </property>
             <item>
              <widget class="QLabel" name="MacroListTitleLabel">
@@ -247,6 +255,16 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="MacroListFilterInput">
+              <property name="placeholderText">
+               <string>Filter...</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

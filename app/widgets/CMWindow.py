@@ -1,12 +1,12 @@
 import ctypes
 import json
 import os.path
-from os.path import abspath,dirname,pardir,join as pathjoin
+from os.path import abspath
 
 from PyQt5 import uic, QtGui, Qt
 from PyQt5.QtCore import QThreadPool, QRunnable, pyqtSlot
 from PyQt5.QtGui import QIcon, QCloseEvent
-from PyQt5.QtWidgets import QFrame, QLabel, QScrollArea, QWidget, QApplication, QFileDialog
+from PyQt5.QtWidgets import QFrame, QLabel, QScrollArea, QWidget, QApplication, QFileDialog, QLineEdit
 from qframelesswindow import FramelessWindow
 
 from .. import utils, pather
@@ -34,6 +34,7 @@ class CMWindow(FramelessWindow):
     MacroListTitleLabel: QLabel
     MacroList: QScrollArea
     MacroListContent: QWidget
+    MacroListFilterInput: QLineEdit
 
     def __init__(self, app: QApplication) -> None:
         super().__init__()
@@ -45,7 +46,7 @@ class CMWindow(FramelessWindow):
         uic.loadUi(pather.ui_design_file("design.ui"), self)
         self.shadowEngine()
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("me.KrazyManJ.ClickMapper.1.0.0")
-        self.setWindowIcon(QIcon(":/favicon/icon.svg"))
+        self.setWindowIcon(QIcon(":/Favicon/favicon/icon.svg"))
         self.setTitleBar(CMTitleBar(self))  # type: ignore
         self.titleBar.raise_()
 
@@ -66,6 +67,8 @@ class CMWindow(FramelessWindow):
         self.selected_macro_row: CMMacroRow | None = None
 
         self.MacroList.mouseDoubleClickEvent = self.MacroListDoubleClickEvent
+
+        self.MacroListFilterInput.textChanged.connect(self.filterMacros)
 
     def shadowEngine(self):
         utils.apply_shadow(self.MacroListCtr, 80, 2, 4)
@@ -99,6 +102,13 @@ class CMWindow(FramelessWindow):
         if Macro.is_macro_file(file_path):
             m: Macro = Macro.from_macro_file(file_path)
             self.MacroListContent.layout().addWidget(CMMacroRow(self, file_path, m))
+
+    def filterMacros(self):
+        t = self.MacroListFilterInput.text().lower()
+        for row in [i for i in self.MacroListContent.children() if isinstance(i, CMMacroRow)]:
+            if (row.macro.name or "").lower().__contains__(t) or (row.macro.description or "").lower().__contains__(t):
+                row.show()
+            else: row.hide()
 
     def macroListPath(self):
         return [abspath(i.macro_path) for i in self.MacroListContent.children() if isinstance(i, CMMacroRow)]

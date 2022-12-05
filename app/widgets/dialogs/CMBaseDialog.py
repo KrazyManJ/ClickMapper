@@ -6,7 +6,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QPushButton, QFrame, QLabel
 
 from app import utils, pather
-from os.path import dirname,pardir,join as pathjoin
 
 class CMBaseDialog(QDialog):
     BtnClose: QPushButton

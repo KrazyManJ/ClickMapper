@@ -7,7 +7,7 @@ class CMRemoveMacroDialog(CMBaseDialog):
         super().__init__()
         self.BtnCancel.hide()
         self.BtnAccept.setStyleSheet("background-color: #aa3333")
-        self.DialogText.setText(f"Are you sure you want to remove macro \"{Utils.crop_string(macro_name, 100)}\"?")
+        self.DialogText.setText(f"Are you sure you want to remove macro \"{utils.crop_string(macro_name, 100)}\"?")
         self.BtnAccept.setText("Remove")
         self.BtnReject.setText("Keep")
         self.showIcon(True)
