@@ -1,0 +1,20 @@
+<RCC>
+  <qresource prefix="Favicon">
+    <file>favicon/icon_64x64.png</file>
+    <file>favicon/icon.svg</file>
+  </qresource>
+  <qresource prefix="TitleBar">
+    <file>title_bar/ClsBtn.svg</file>
+    <file>title_bar/ClsBtn_Act.svg</file>
+    <file>title_bar/ClsBtn_Hov.svg</file>
+    <file>title_bar/MaxBtn.svg</file>
+    <file>title_bar/MaxBtn_Act.svg</file>
+    <file>title_bar/MaxBtn_Hov.svg</file>
+    <file>title_bar/MinBtn.svg</file>
+    <file>title_bar/MinBtn_Act.svg</file>
+    <file>title_bar/MinBtn_Hov.svg</file>
+  </qresource>
+  <qresource prefix="Dialog">
+    <file>dialog/Warn.svg</file>
+  </qresource>
+</RCC>

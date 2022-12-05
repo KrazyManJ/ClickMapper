@@ -40,7 +40,7 @@ background-color: #212121;
 
 #BtnClose { border-image: url(:/TitleBar/title_bar/ClsBtn.svg); }
 #BtnClose:hover { border-image: url(:/TitleBar/title_bar/ClsBtn_Hov.svg); }
-#BtnClose:pressed { border-image: url(:/TitleBar/img/ClsBtn_Act.svg); }
+#BtnClose:pressed { border-image: url(:/TitleBar/title_bar/ClsBtn_Act.svg); }
 
 
 #DialogText {

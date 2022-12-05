@@ -57,12 +57,12 @@ class CMMacroRow(QFrame):
         if a0.modifiers() & Qt.ControlModifier and a0.button() == Qt.LeftButton:
             os.system(f"explorer /select,{self.macro_path}")
         else:
-            self.win.macroChoose(self)
+            self.win.choose_saved_macro(self)
 
     def mouseDoubleClickEvent(self, a0: QtGui.QMouseEvent) -> None:
-        self.win.macroRun(self)
+        self.win.run_macro_from_row(self)
 
     def removeMacro(self):
         dialog = CMRemoveMacroDialog(self.macro.name)
         if dialog.execResponse().accepted:
-            self.win.macroDelete(self)
+            self.win.remove_saved_macro(self)

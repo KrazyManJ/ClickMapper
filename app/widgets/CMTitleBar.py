@@ -46,9 +46,6 @@ class CMTitleBar(QWidget):
     def updateMacroTitling(self):
         self.MacroName.setText(utils.crop_string(self.macroname, (self.window().width() - 500) // 10))
 
-    def eventFilter(self, obj, e):
-        return super().eventFilter(obj, e)
-
     def mouseDoubleClickEvent(self, event):
         if event.button() != Qt.LeftButton: return
         self.__toggleMaxState()

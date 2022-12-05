@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from PyQt5 import uic, QtGui
+from PyQt5 import uic, QtGui, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QPushButton, QFrame, QLabel
@@ -51,6 +51,17 @@ class CMBaseDialog(QDialog):
         for b in [self.BtnCancel, self.BtnAccept, self.BtnReject]:
             utils.apply_shadow(b, 80)
 
+        self.installEventFilter(self)
+
+    def eventFilter(self, a0: QtCore.QObject, a1: QtCore.QEvent) -> bool:
+        if a1.__class__ == QtGui.QKeyEvent:
+            if a1.key() == Qt.Key_Enter or a1.key() == Qt.Key_Return:
+                return False
+        return False
+
+    def setWarningButton(self, btn):
+        self.BtnAccept.setStyleSheet("background-color: #aa3333")
+
     def showIcon(self, state: bool):
         if state:
             self.DialogIcon.show()
@@ -72,10 +83,6 @@ class CMBaseDialog(QDialog):
     def execResponse(self):
         result = self.exec_()
         return CMDialogResponseHolder(result == 0, result == 1, result == 2)
-
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.done(1 if a0.isAccepted() else 2)
-
 
 @dataclass(frozen=True)
 class CMDialogResponseHolder:

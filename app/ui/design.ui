@@ -63,7 +63,7 @@ QScrollBar:vertical{
 	right: 20px;
 	margin: 10px 10px 45px 0;
 	background: #151515;
-
+	border-radius: 5px;
 }
 QScrollBar::handle:vertical {
 	background: #505050;
@@ -117,7 +117,16 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 	background: #333333;
 	border-radius: 10px;
 	color: #cccccc;
-	padding: 5px 10px
+	padding: 5px 10px;
+	
+	selection-background-color: #D73636;
+}
+
+#MacroListFilterInput QAction{
+	border-image: url(:/TitleBar/title_bar/ClsBtn.svg);
+}
+#MacroListFilterInput QAction:hover {
+	border-image: url(:/TitleBar/title_bar/ClsBtn_Hov.svg);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -228,16 +237,16 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <property name="spacing">
-             <number>0</number>
+             <number>10</number>
             </property>
             <property name="leftMargin">
-             <number>10</number>
+             <number>30</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>10</number>
+             <number>30</number>
             </property>
             <property name="bottomMargin">
              <number>10</number>
@@ -263,8 +272,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
               <property name="placeholderText">
                <string>Filter...</string>
               </property>
+              <property name="cursorMoveStyle">
+               <enum>Qt::LogicalMoveStyle</enum>
+              </property>
               <property name="clearButtonEnabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -300,6 +312,18 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>350</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>350</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <property name="spacing">
               <number>5</number>
@@ -311,7 +335,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
               <number>10</number>
              </property>
              <property name="rightMargin">
-              <number>20</number>
+              <number>30</number>
              </property>
              <property name="bottomMargin">
               <number>10</number>

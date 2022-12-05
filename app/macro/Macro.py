@@ -6,7 +6,6 @@ from os import PathLike
 
 import jsonschema
 from pynput import mouse
-from threading import Thread
 from os.path import dirname,join as pathjoin
 
 __MOUSE__ = mouse.Controller()
@@ -59,12 +58,6 @@ class Macro:
                 time.sleep(self.executions_delay / 1000)
                 if self.__term__: break
         self.__is_run__ = False
-
-    def run_as_thread(self):
-        if self.__is_run__: return
-        thr = Thread(target=self.run, name="macro")
-        thr.start()
-        return thr
 
     def terminate(self):
         if not self.__is_run__: return
