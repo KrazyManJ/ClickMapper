@@ -9,7 +9,7 @@ from PyQt5.QtGui import QIcon, QCloseEvent
 from PyQt5.QtWidgets import QFrame, QLabel, QScrollArea, QWidget, QApplication, QFileDialog
 from qframelesswindow import FramelessWindow
 
-from .. import utils
+from .. import utils, pather
 from .CMTitleBar import CMTitleBar
 from .CMMacroRow import CMMacroRow
 from app.macro.Macro import Macro
@@ -29,9 +29,6 @@ class MacroRunner(QRunnable):
 
 class CMWindow(FramelessWindow):
 
-    __SAVED_MACROS_PATH__ = pathjoin(dirname(__file__),pardir,"saved_macros.json")
-
-
     MacroListCtr: QFrame
     MacroListTitle: QFrame
     MacroListTitleLabel: QLabel
@@ -45,7 +42,7 @@ class CMWindow(FramelessWindow):
 
         # UI LOADING, ICON, TITLEBAR, SHADOWENGINE
 
-        uic.loadUi(os.path.join(os.path.dirname(__file__), os.pardir,"ui","design.ui"), self)
+        uic.loadUi(pather.ui_design_file("design.ui"), self)
         self.shadowEngine()
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("me.KrazyManJ.ClickMapper.1.0.0")
         self.setWindowIcon(QIcon(":/favicon/icon.svg"))
@@ -108,10 +105,10 @@ class CMWindow(FramelessWindow):
 
     def macroListSave(self):
         json.dump([os.path.relpath(p) for p in self.macroListPath()],
-                  open(self.__SAVED_MACROS_PATH__, "w", encoding="utf8", errors="surrogateescape"))
+                  open(pather.SAVED_MACRO_PATH, "w", encoding="utf8", errors="surrogateescape"))
 
     def macroListLoad(self):
-        return set(json.load(open(self.__SAVED_MACROS_PATH__, "r", encoding="utf8", errors="surrogateescape")))
+        return set(json.load(open(pather.SAVED_MACRO_PATH, "r", encoding="utf8", errors="surrogateescape")))
 
     def setMacroTitling(self, title: str, path: str):
         self.setWindowTitle(f"Click Mapper - {title}")

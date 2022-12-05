@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QPushButton, QFrame, QLabel
 
-from app import utils
+from app import utils, pather
 from os.path import dirname,pardir,join as pathjoin
 
 class CMBaseDialog(QDialog):
@@ -27,7 +27,7 @@ class CMBaseDialog(QDialog):
 
         self.clickPos = None
 
-        uic.loadUi(pathjoin(dirname(__file__),pardir,pardir,"ui","base_dialog.ui"), self)
+        uic.loadUi(pather.ui_design_file("base_dialog.ui"), self)
         self.setWindowTitle("ClickMapper")
         self.setWindowIcon(QIcon(":/favicon/icon.svg"))
         self.setWindowFlag(Qt.FramelessWindowHint)
