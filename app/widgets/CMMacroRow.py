@@ -12,7 +12,7 @@ from app.widgets.dialogs.CMRemoveMacroDialog import CMRemoveMacroDialog
 from app.macro.Macro import Macro
 
 if TYPE_CHECKING:
-    from app.widgets.CMWindow import CMWindow
+    from app.window import CMWindow
 
 
 class CMMacroRow(QFrame):
