@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QDialog, QPushButton, QFrame, QLabel
 
 from app import utils, pather
 
+
 class CMBaseDialog(QDialog):
     BtnClose: QPushButton
     TitleBar: QFrame
