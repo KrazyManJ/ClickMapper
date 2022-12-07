@@ -5,12 +5,11 @@ from os.path import abspath, relpath
 from PyQt5 import uic, QtGui, Qt  # type: ignore
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QIcon, QCloseEvent
-from PyQt5.QtWidgets import QFrame, QLabel, QScrollArea, QWidget, QFileDialog, QLineEdit
+from PyQt5.QtWidgets import QFrame, QLabel, QScrollArea, QWidget, QFileDialog, QLineEdit, QApplication
 from qframelesswindow import FramelessWindow
 
-from app import utils, pather
-from app.file_manager.cm_file import CMFile
-from app.images import resources
+from app import utils, file_manager
+from app.file_manager import CMFile
 from app.widgets.CMTitleBar import CMTitleBar
 from app.widgets.CMMacroRow import CMMacroRow
 from app.macro.Macro import Macro
@@ -19,9 +18,16 @@ from app.widgets.dialogs.CMRunInfMacroDialog import CMRunInfMacroDialog
 from app.macro.macro_runner import MacroRunner
 
 
-class CMWindow(FramelessWindow):
+class Window(FramelessWindow):
 
-    MACRO_LIST_FILE = CMFile(pather.SAVED_MACRO_PATH, "[]")
+    @classmethod
+    def is_already_running(cls):
+        try:
+            open(file_manager.SAVED_MACRO_PATH,"r").read()
+            return False
+        except:
+            return True
+
 
     # =======================================================================================
     #   WIDGET LIST
@@ -43,11 +49,11 @@ class CMWindow(FramelessWindow):
         self.app = app
         self.threadpool = QThreadPool()
         self.selected_macro_row = None
+        self.MACRO_LIST_FILE = CMFile(file_manager.SAVED_MACRO_PATH, "[]")
 
-        resources.qInitResources()
-        QtGui.QFontDatabase.addApplicationFont("fonts/Inter.ttf")
+        QtGui.QFontDatabase.addApplicationFont(file_manager.INTER_FONT_PATH)
 
-        uic.loadUi(pather.ui_design_file("design.ui"), self)
+        uic.loadUi(file_manager.ui_design_file_path("design.ui"), self)
         self.shadowEngine()
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("me.KrazyManJ.ClickMapper.1.0.0")
         self.setWindowIcon(QIcon(":/Favicon/favicon/icon.svg"))

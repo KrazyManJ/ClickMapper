@@ -7,17 +7,17 @@ from PyQt5.QtWidgets import QFrame, QSizePolicy, QHBoxLayout, QPushButton, QLabe
 from typing import TYPE_CHECKING
 
 from app import utils
-from app.file_manager.cm_file import CMFile
+from app.file_manager import CMFile
 from app.widgets.dialogs.CMRemoveMacroDialog import CMRemoveMacroDialog
 from app.macro.Macro import Macro
 
 if TYPE_CHECKING:
-    from app.window import CMWindow
+    from app.window import Window
 
 
 class CMMacroRow(QFrame):
 
-    def __init__(self, ui: "CMWindow", macro_path: str):
+    def __init__(self, ui: "Window", macro_path: str):
         super().__init__(None)
 
         self.win = ui
@@ -65,11 +65,12 @@ class CMMacroRow(QFrame):
         self.label_layout.addWidget(self.label)
         self.description.setWordWrap(True)
         self.description.setStyleSheet('color: #777777;font: 9pt "Inter"')
-        self.description.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.description.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignJustify)
         self.label_layout.addWidget(self.description)
         self.main_layout.addLayout(self.label_layout)
         self.button.clicked.connect(self.remove_macro)
         self.main_layout.addWidget(self.button)
+        self.main_layout.setSpacing(5)
 
     def mousePressEvent(self, event) -> None:
         if event.modifiers() & Qt.ControlModifier and event.button() == Qt.LeftButton and self.getState():
@@ -94,11 +95,10 @@ class CMMacroRow(QFrame):
         font.setStrikeOut(not state)
         self.label.setFont(font)
         self.label.setStyleSheet("" if state else "color: #bbbbbb")
-        self.main_layout.setSpacing(0 if state else 10)
         if state:
             self.warn_icon.hide()
             self.label.setText(utils.crop_string(self.macro.name or "Untitled", 25))
-            self.description.setText(utils.crop_string(self.macro.description or "No description provided", 80))
+            self.description.setText(utils.crop_string(self.macro.description or "No description provided", 70))
         else:
             self.warn_icon.show()
             self.label.setText(utils.crop_string(os.path.basename(self.file_path), 20))

@@ -20,7 +20,7 @@
 
 #Title {
 	color: white;
-	font: bold 16pt &quot;Inter&quot;;
+	font: 81 16pt &quot;Inter ExtraBold&quot;;
 }
 
 #TitleIcon {
@@ -135,11 +135,11 @@ QToolTip {
        <widget class="QLabel" name="Title">
         <property name="font">
          <font>
-          <family>Inter</family>
+          <family>Inter ExtraBold</family>
           <pointsize>16</pointsize>
-          <weight>75</weight>
+          <weight>10</weight>
           <italic>false</italic>
-          <bold>true</bold>
+          <bold>false</bold>
           <kerning>false</kerning>
          </font>
         </property>
@@ -150,7 +150,7 @@ QToolTip {
          <string>Click Mapper</string>
         </property>
         <property name="textFormat">
-         <enum>Qt::PlainText</enum>
+         <enum>Qt::RichText</enum>
         </property>
         <property name="scaledContents">
          <bool>false</bool>

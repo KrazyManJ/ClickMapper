@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QPushButton, QFrame, QLabel
 
-from app import utils, pather
+from app import utils, file_manager
 
 
 class CMBaseDialog(QDialog):
@@ -27,7 +27,7 @@ class CMBaseDialog(QDialog):
 
         self.clickPos = None
 
-        uic.loadUi(pather.ui_design_file("base_dialog.ui"), self)
+        uic.loadUi(file_manager.ui_design_file_path("base_dialog.ui"), self)
         self.setWindowTitle("ClickMapper")
         self.setWindowIcon(QIcon(":/favicon/icon.svg"))
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -61,7 +61,11 @@ class CMBaseDialog(QDialog):
         return False
 
     def setWarningButton(self, btn):
-        self.BtnAccept.setStyleSheet("background-color: #aa3333")
+        self.BtnAccept.setStyleSheet("""
+        QPushButton { background-color: #aa3333; }
+        QPushButton:hover { background-color: #bb4444; }
+        QPushButton:pressed { background-color: #bb5555; }
+        """)
 
     def showIcon(self, state: bool):
         if state:

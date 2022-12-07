@@ -60,6 +60,10 @@ margin-bottom: 10px
 #DialogButtons &gt; QPushButton:hover {
 	background-color: #505050;
 }
+#DialogButtons &gt; QPushButton:pressed {
+	background-color: #606060;
+}
+
 
 #DialogIcon {
 border-image: url(:/Dialog/dialog/Warn.svg);

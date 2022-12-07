@@ -1,12 +1,12 @@
 import sys
 
-from PyQt5 import uic
+from PyQt5 import uic  # type: ignore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QWidget, QFrame, QLabel, QPushButton
 from qframelesswindow.utils import startSystemMove
 
-from app import utils, pather
+from app import utils, file_manager
 from app.utils import apply_shadow
 
 
@@ -21,7 +21,7 @@ class CMTitleBar(QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)  # type: ignore
-        uic.loadUi(pather.ui_design_file("titlebar.ui"), self)
+        uic.loadUi(file_manager.ui_design_file_path("titlebar.ui"), self)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.macroname = ""
 

@@ -84,7 +84,10 @@ class Macro:
     def is_macro_file(cls, file_path: str | PathLike):
         if not os.path.isfile(file_path): return False
         if not file_path.endswith(".json"): return False
-        return cls.is_macro_json(open(file_path, "r", **cls.OPEN_FLAGS).read())
+        try:
+            return cls.is_macro_json(open(file_path, "r", **cls.OPEN_FLAGS).read())
+        except:
+            return False
 
     @classmethod
     def from_macro_file(cls, file_path: str | PathLike):
